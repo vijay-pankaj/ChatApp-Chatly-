@@ -28,13 +28,14 @@ pipeline {
             }
         }
 
-        stage('Archive') {
-            steps {
-                dir('chatapp') {
-                    archiveArtifacts artifacts: 'build/**', fingerprint: true
-                }
-            }
+       stage('Archive') {
+    steps {
+        dir('chatapp') {
+            archiveArtifacts artifacts: 'dist/**', fingerprint: true
         }
+    }
+}
+
     }
 
     post {
