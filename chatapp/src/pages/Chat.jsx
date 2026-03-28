@@ -50,7 +50,7 @@ export default function Chat() {
   }, [activeUser]);
 
   const handleLogout = () => {
-    setUser(null); // clears localStorage via updateUser in context
+    setUser(null);
     navigate("/login");
   };
 

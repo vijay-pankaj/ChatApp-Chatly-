@@ -22,7 +22,7 @@ export default function Login() {
       const res = await loginUser(form);
 
       localStorage.setItem("token", res.data.token);
-      setUser(res.data.user); // also saves to localStorage via updateUser
+      setUser(res.data.user);
 
       const socket = connectSocket();
       socket.emit("register", res.data.user.id);
