@@ -5,13 +5,15 @@ services:
     build: ./chatapp
     ports:
       - "80:80"
+    depends_on:
+      - backend
 
   backend:
     build: ./backend
     ports:
       - "5000:5000"
     environment:
-      DB_HOST: mysql-db
+      DB_HOST: db
       DB_USER: chatuser
       DB_PASSWORD: chatpass
       DB_NAME: chatappdb
@@ -19,9 +21,9 @@ services:
     depends_on:
       - db
 
-
   db:
     image: mysql:8
+    restart: always
     environment:
       MYSQL_ROOT_PASSWORD: rootpass
       MYSQL_DATABASE: chatappdb
@@ -29,3 +31,8 @@ services:
       MYSQL_PASSWORD: chatpass
     ports:
       - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+volumes:
+  mysql_data:
