@@ -6,27 +6,33 @@ pipeline {
             steps {
                 git(
                     url: 'https://github.com/vijay-pankaj/ChatApp-Chatly-.git',
-                    credentialsId: 'github-pat-id',
                     branch: 'main'
+                    // credentialsId: 'github-pat-id' // optional for public repo
                 )
             }
         }
 
         stage('Install Dependencies') {
             steps {
-                bat 'npm install'
+                dir('chatapp') {   
+                    bat 'npm install'
+                }
             }
         }
 
         stage('Build') {
             steps {
-                bat 'npm run build'
+                dir('chatapp') {   
+                    bat 'npm run build'
+                }
             }
         }
 
         stage('Archive') {
             steps {
-                archiveArtifacts artifacts: 'build/**', fingerprint: true
+                dir('chatapp') {
+                    archiveArtifacts artifacts: 'build/**', fingerprint: true
+                }
             }
         }
     }
