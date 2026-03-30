@@ -7,7 +7,6 @@ pipeline {
                 git(
                     url: 'https://github.com/vijay-pankaj/ChatApp-Chatly-.git',
                     branch: 'main'
-                    // credentialsId: 'github-pat-id' // optional for public repo
                 )
             }
         }
@@ -15,35 +14,44 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 dir('chatapp') {   
-                    bat 'npm install'
+                    sh 'npm install'  
                 }
             }
         }
 
-        stage('Build') {
+        stage('Build Frontend') {
             steps {
                 dir('chatapp') {   
-                    bat 'npm run build'
+                    sh 'npm run build'
                 }
             }
         }
 
-       stage('Archive') {
-    steps {
-        dir('chatapp') {
-            archiveArtifacts artifacts: 'dist/**', fingerprint: true
+        stage('Docker Build') {
+            steps {
+                sh 'docker-compose build'
+            }
         }
-    }
-}
 
+        stage('Stop Old Containers') {
+            steps {
+                sh 'docker-compose down'
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                sh 'docker-compose up -d'
+            }
+        }
     }
 
     post {
         success {
-            echo 'Build successful!'
+            echo 'Build & Deployment successful'
         }
         failure {
-            echo 'Build failed!'
+            echo 'Build or Deployment failed'
         }
     }
 }
