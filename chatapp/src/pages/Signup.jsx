@@ -6,7 +6,6 @@ import { toast } from "react-toastify";
 export default function Signup() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const [agreed, setAgreed] = useState(false);
   const [form, setForm] = useState({ name: "", email: "", password: "" });
 
   const getStrength = (pw) => {
@@ -32,10 +31,6 @@ export default function Signup() {
   const handleSignup = async () => {
     if (!form.name || !form.email || !form.password) {
       toast.warn("Please fill in all fields.");
-      return;
-    }
-    if (!agreed) {
-      toast.warn("Please accept the terms to continue.");
       return;
     }
     if (strength < 2) {

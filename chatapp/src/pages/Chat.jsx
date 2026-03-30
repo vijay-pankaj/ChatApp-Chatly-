@@ -2,7 +2,7 @@ import { useEffect, useState, useContext, useRef } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { getSocket } from "../services/socket";
 import { getAllUsers, getChatHistory } from "../services/api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
 export default function Chat() {
@@ -97,12 +97,8 @@ export default function Chat() {
   };
 
   if (!user) {
-    return (
-      <div className="min-h-screen bg-[#F7F8FA] flex items-center justify-center">
-        <p className="text-gray-500 text-sm">Please login first</p>
-      </div>
-    );
-  }
+  return <Navigate to="/login" replace />;
+}
 
   return (
     <div className="min-h-screen bg-[#F7F8FA] flex items-center p-4">

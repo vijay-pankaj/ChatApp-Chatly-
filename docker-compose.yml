@@ -12,14 +12,12 @@ services:
     build: ./backend
     ports:
       - "5000:5000"
-    environment:
-      DB_HOST: db
-      DB_USER: chatuser
-      DB_PASSWORD: chatpass
-      DB_NAME: chatappdb
-      DB_PORT: 3306
+    env_file:
+      - ./backend/.env
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    restart: always
 
   db:
     image: mysql:8
@@ -33,6 +31,12 @@ services:
       - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   mysql_data:
+
